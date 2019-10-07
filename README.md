@@ -1,1 +1,1 @@
-# go <https://icegreentee.github.io/>
+# goto <https://icegreentee.github.io/>
