@@ -2,9 +2,9 @@
 <html>
 <head><meta name="generator" content="Hexo 3.9.0">
   <meta charset="utf-8">
-  <title>关于 | Hexo</title>
-  <meta name="keywords" content>
-  <meta name="description" content="关于 | Hexo">
+  <title>vue-element-admin学习之旅 | Hexo</title>
+  <meta name="keywords" content=" vue , vue-element-admin ">
+  <meta name="description" content="vue-element-admin学习之旅 | Hexo">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 <meta name="description" content="简述之前没有借用模板，纯用react+nodejs搭建了我的第一个博客。但是效果总觉得没这么好，所以使用了hexo并参考了大佬的博客，搭了这个博客，用以来记录点滴的学习过程…">
 <meta property="og:type" content="website">
@@ -240,24 +240,38 @@
 </aside>
 <div class="post">
     <div class="pjax">
-        <article id="page-" class="article article-type-page" itemscope itemprop="blogPost">
+        <article id="post-vue-element-admin学习之" class="article article-type-post" itemscope itemprop="blogPost">
     
-        <h1 class="article-title">关于</h1>
+        <h1 class="article-title">vue-element-admin学习之旅</h1>
     
     <div class="article-meta">
         
         
         
+        <span class="book">
+            
+                <a href="javascript:" data-rel="前端">前端</a>
+            
+        </span>
+        
+        
+        <span class="tag">
+            
+            <a href="javascript:" class="color4">vue</a>
+            
+            <a href="javascript:" class="color3">vue-element-admin</a>
+            
+        </span>
         
     </div>
     <div class="article-meta">
         
-        创建时间:<time class="date" title='更新时间: 2019-10-16 15:52:19'>2019-10-07 15:27</time>
+        创建时间:<time class="date" title='更新时间: 2019-10-18 23:23:39'>2019-10-18 18:22</time>
         
     </div>
     <div class="article-meta">
         
-        <span>字数:68</span>
+        <span>字数:519</span>
         
         
         <span id="busuanzi_container_page_pv">
@@ -276,7 +290,7 @@
     
     <div class="toc-ref">
     
-        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#简述"><span class="toc-text">简述</span></a></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#axios封装"><span class="toc-text">axios封装</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Swagger"><span class="toc-text">Swagger</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#easy-mock"><span class="toc-text">easy-mock</span></a></li></ol>
     
 <style>
     .left-col .switch-btn,
@@ -292,8 +306,107 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="简述"><a href="#简述" class="headerlink" title="简述"></a>简述</h2><p>之前没有借用模板，纯用react+nodejs搭建了我的第一个<a href="http://tsubasa.top/work/blog/index.html#/" target="_blank" rel="noopener">博客</a>。<br>但是效果总觉得没这么好，所以使用了hexo并参考了大佬的博客，搭了这个博客，用以来记录点滴的学习过程…</p>
+        <p><a href="https://juejin.im/post/59097cd7a22b9d0065fb61d2#heading-11" target="_blank" rel="noopener">学习网址</a></p>
+<h1 id="axios封装"><a href="#axios封装" class="headerlink" title="axios封装"></a>axios封装</h1><p>在vue-element-admin中，已经对axios进行了封装。其中下面的requset.js主要是使用axios.create创建一个实例，为这个实例设置基础路径，对请求和响应增设拦截器，进行统一的操作。</p>
+<pre><code class="js">import axios from &#39;axios&#39;
+import { MessageBox, Message } from &#39;element-ui&#39;
+import store from &#39;@/store&#39;
+import { getToken } from &#39;@/utils/auth&#39;
+//@ alias 别名指向src目录 在config.js中设置
+// 创建axios实例
+const service = axios.create({
+  baseURL: process.env.VUE_APP_BASE_API, // url = base url + request url
+  // withCredentials: true, // send cookies when cross-domain requests
+  timeout: 5000 // request timeout
+})
 
+// request 拦截器
+service.interceptors.request.use(
+  config =&gt; {
+    //发送请求之前操作，若存在token则向头部添加x-token
+    if (store.getters.token) {
+      // let each request carry token
+      // [&#39;X-Token&#39;] is a custom headers key
+      // please modify it according to the actual situation
+      config.headers[&#39;X-Token&#39;] = getToken()
+    }
+    return config
+  },
+  error =&gt; {
+    // do something with request error
+    console.log(error) // for debug
+    return Promise.reject(error)
+  }
+)
+
+// 响应拦截器
+service.interceptors.response.use(
+  /**
+   * If you want to get http information such as headers or status
+   * Please return  response =&gt; response
+  */
+
+  /**
+   * Determine the request status by custom code
+   * Here is just an example
+   * You can also judge the status by HTTP Status Code
+   */
+  response =&gt; {
+    const res = response.data
+    //根据返回码进行相应的处理
+    // if the custom code is not 20000, it is judged as an error.
+    if (res.code !== 20000) {
+      Message({
+        message: res.message || &#39;Error&#39;,
+        type: &#39;error&#39;,
+        duration: 5 * 1000
+      })
+
+      // 50008: Illegal token; 50012: Other clients logged in; 50014: Token expired;
+      if (res.code === 50008 || res.code === 50012 || res.code === 50014) {
+        // to re-login
+        MessageBox.confirm(&#39;You have been logged out, you can cancel to stay on this page, or log in again&#39;, &#39;Confirm logout&#39;, {
+          confirmButtonText: &#39;Re-Login&#39;,
+          cancelButtonText: &#39;Cancel&#39;,
+          type: &#39;warning&#39;
+        }).then(() =&gt; {
+          store.dispatch(&#39;user/resetToken&#39;).then(() =&gt; {
+            location.reload()
+          })
+        })
+      }
+      return Promise.reject(new Error(res.message || &#39;Error&#39;))
+    } else {
+      return res
+    }
+  },
+  error =&gt; {
+    console.log(&#39;err&#39; + error) // for debug
+    Message({
+      message: error.message,
+      type: &#39;error&#39;,
+      duration: 5 * 1000
+    })
+    return Promise.reject(error)
+  }
+)
+
+export default service
+</code></pre>
+<p>以这个实例为基础，在@/api 中添加配置，加入请求路径，请求方法，请求数据。</p>
+<pre><code class="js">import request from &#39;@/utils/request&#39;
+
+export function fetchList(query) {
+  return request({
+    url: &#39;/article/list&#39;,
+    method: &#39;get&#39;,
+    params: query
+  })
+}</code></pre>
+<p>这样只需要在对应的页面中调用该方法发起请求,然后写处理函数。</p>
+<p>fetchList(query).then(res=&gt;{</p>
+<p>})</p>
+<h1 id="Swagger"><a href="#Swagger" class="headerlink" title="Swagger"></a>Swagger</h1><h1 id="easy-mock"><a href="#easy-mock" class="headerlink" title="easy-mock"></a>easy-mock</h1>
       
        <hr><span style="font-style: italic;color: gray;"> 欢迎指出任何有错误或不够清晰的表达。 </span>
     </div>

@@ -2,9 +2,9 @@
 <html>
 <head><meta name="generator" content="Hexo 3.9.0">
   <meta charset="utf-8">
-  <title>关于 | Hexo</title>
-  <meta name="keywords" content>
-  <meta name="description" content="关于 | Hexo">
+  <title>js小记录 | Hexo</title>
+  <meta name="keywords" content=" javascript ">
+  <meta name="description" content="js小记录 | Hexo">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 <meta name="description" content="简述之前没有借用模板，纯用react+nodejs搭建了我的第一个博客。但是效果总觉得没这么好，所以使用了hexo并参考了大佬的博客，搭了这个博客，用以来记录点滴的学习过程…">
 <meta property="og:type" content="website">
@@ -240,24 +240,36 @@
 </aside>
 <div class="post">
     <div class="pjax">
-        <article id="page-" class="article article-type-page" itemscope itemprop="blogPost">
+        <article id="post-js小记录" class="article article-type-post" itemscope itemprop="blogPost">
     
-        <h1 class="article-title">关于</h1>
+        <h1 class="article-title">js小记录</h1>
     
     <div class="article-meta">
         
         
         
+        <span class="book">
+            
+                <a href="javascript:" data-rel="工具">工具</a>
+            
+        </span>
+        
+        
+        <span class="tag">
+            
+            <a href="javascript:" class="color1">javascript</a>
+            
+        </span>
         
     </div>
     <div class="article-meta">
         
-        创建时间:<time class="date" title='更新时间: 2019-10-16 15:52:19'>2019-10-07 15:27</time>
+        创建时间:<time class="date" title='更新时间: 2019-10-16 17:35:25'>2019-10-16 15:33</time>
         
     </div>
     <div class="article-meta">
         
-        <span>字数:68</span>
+        <span>字数:520</span>
         
         
         <span id="busuanzi_container_page_pv">
@@ -276,7 +288,7 @@
     
     <div class="toc-ref">
     
-        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#简述"><span class="toc-text">简述</span></a></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#foreach方法遍历数组"><span class="toc-text">foreach方法遍历数组</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#map方法"><span class="toc-text">map方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#for-in遍历数组"><span class="toc-text">for  in遍历数组</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#for-of-遍历数组"><span class="toc-text">for of 遍历数组</span></a></li></ol>
     
 <style>
     .left-col .switch-btn,
@@ -292,7 +304,45 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="简述"><a href="#简述" class="headerlink" title="简述"></a>简述</h2><p>之前没有借用模板，纯用react+nodejs搭建了我的第一个<a href="http://tsubasa.top/work/blog/index.html#/" target="_blank" rel="noopener">博客</a>。<br>但是效果总觉得没这么好，所以使用了hexo并参考了大佬的博客，搭了这个博客，用以来记录点滴的学习过程…</p>
+        <h2 id="foreach方法遍历数组"><a href="#foreach方法遍历数组" class="headerlink" title="foreach方法遍历数组"></a>foreach方法遍历数组</h2><p>相对与for循环来遍历数组，更快捷的写法</p>
+<pre><code class="javascript">let a = [1, 2, 3, 4, 5, 6, 7, 8, 9,&quot;151&quot; , 10]
+
+a.forEach((value, index ,self) =&gt; { 
+    console.log(value,index,self) }
+)</code></pre>
+<p>结果为</p>
+<p>1 0 [ 1, 2, 3, 4, 5, 6, 7, 8, 9, ‘151’, 10 ]<br>2 1 [ 1, 2, 3, 4, 5, 10, 7, 8, 9, ‘151’, 10 ]<br>3 2 [ 1, 2, 3, 4, 5, 10, 7, 8, 9, ‘151’, 10 ]<br>4 3 [ 1, 2, 3, 4, 5, 10, 7, 8, 9, ‘151’, 10 ]<br>5 4 [ 1, 2, 3, 4, 5, 10, 7, 8, 9, ‘151’, 10 ]<br>10 5 [ 1, 2, 3, 4, 5, 10, 7, 8, 9, ‘151’, 10 ]<br>7 6 [ 1, 2, 3, 4, 5, 10, 7, 8, 9, ‘151’, 10 ]<br>8 7 [ 1, 2, 3, 4, 5, 10, 7, 8, 9, ‘151’, 10 ]<br>9 8 [ 1, 2, 3, 4, 5, 10, 7, 8, 9, ‘151’, 10 ]<br>151 9 [ 1, 2, 3, 4, 5, 10, 7, 8, 9, ‘151’, 10 ]<br>10 10 [ 1, 2, 3, 4, 5, 10, 7, 8, 9, ‘151’, 10 ]</p>
+<p>foreach方法</p>
+<p>传入一个回调函数，回调函数参数为 值，序号，数组本身</p>
+<ul>
+<li><p>foreach方法没有返回值</p>
+</li>
+<li><p>foreach方法会忽略数组中undefine的值</p>
+</li>
+</ul>
+<h2 id="map方法"><a href="#map方法" class="headerlink" title="map方法"></a>map方法</h2><p>与foreach方法类似</p>
+<pre><code class="javascript">let a = [1, 2, 3, 4, 5, 6, 7, 8, 9, , 10]
+
+let b = a.map((value, index ,self) =&gt; { 
+    return [value,index] }
+)
+console.log(b)</code></pre>
+<p>[ [ 1, 0 ],<br>  [ 2, 1 ],<br>  [ 3, 2 ],<br>  [ 4, 3 ],<br>  [ 5, 4 ],<br>  [ 6, 5 ],<br>  [ 7, 6 ],<br>  [ 8, 7 ],<br>  [ 9, 8 ],<br>  &lt;1 empty item&gt;,<br>  [ 10, 10 ] ]</p>
+<p>不同的是map方法有返回值，map方法会遍历数组，return的结果最后会被组合成为一个新的数组返回。且map方法不会跳过空白值。</p>
+<h2 id="for-in遍历数组"><a href="#for-in遍历数组" class="headerlink" title="for  in遍历数组"></a>for  in遍历数组</h2><p>主要用于对象，用于数组可能不是按数组内部顺序进行遍历，for in遍历数组的索引值。主要用于普通对象。</p>
+<h2 id="for-of-遍历数组"><a href="#for-of-遍历数组" class="headerlink" title="for of 遍历数组"></a>for of 遍历数组</h2><p>相较于for in，for of遍历数组的值，相较于foreach，for of可以使用break，continue等。可应用maps，set，array等可迭代对象，以及类数组对象。但是一般对象无法使用。要想遍历所有对象，搭配object.keys（）来使用。</p>
+<pre><code class="javascript">const iterable = [1,,8,454];
+
+for(let i of iterable){
+    console.log(i)
+}</code></pre>
+<p>1<br>undefined<br>8<br>454</p>
+<pre><code class="javascript">const iterable = new Map([[&#39;one&#39;, 1], [&#39;two&#39;, 2]]);
+
+for (const [key, value] of iterable) {
+  console.log(`Key: ${key} and Value: ${value}`);
+}</code></pre>
+<p>Key: one and Value: 1<br>Key: two and Value: 2</p>
 
       
        <hr><span style="font-style: italic;color: gray;"> 欢迎指出任何有错误或不够清晰的表达。 </span>

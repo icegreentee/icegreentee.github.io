@@ -2,9 +2,9 @@
 <html>
 <head><meta name="generator" content="Hexo 3.9.0">
   <meta charset="utf-8">
-  <title>关于 | Hexo</title>
-  <meta name="keywords" content>
-  <meta name="description" content="关于 | Hexo">
+  <title>vuex | Hexo</title>
+  <meta name="keywords" content=" vuex ">
+  <meta name="description" content="vuex | Hexo">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 <meta name="description" content="简述之前没有借用模板，纯用react+nodejs搭建了我的第一个博客。但是效果总觉得没这么好，所以使用了hexo并参考了大佬的博客，搭了这个博客，用以来记录点滴的学习过程…">
 <meta property="og:type" content="website">
@@ -240,24 +240,36 @@
 </aside>
 <div class="post">
     <div class="pjax">
-        <article id="page-" class="article article-type-page" itemscope itemprop="blogPost">
+        <article id="post-vuex" class="article article-type-post" itemscope itemprop="blogPost">
     
-        <h1 class="article-title">关于</h1>
+        <h1 class="article-title">vuex</h1>
     
     <div class="article-meta">
         
         
         
+        <span class="book">
+            
+                <a href="javascript:" data-rel="前端">前端</a>
+            
+        </span>
+        
+        
+        <span class="tag">
+            
+            <a href="javascript:" class="color5">vuex</a>
+            
+        </span>
         
     </div>
     <div class="article-meta">
         
-        创建时间:<time class="date" title='更新时间: 2019-10-16 15:52:19'>2019-10-07 15:27</time>
+        创建时间:<time class="date" title='更新时间: 2019-10-20 14:30:52'>2019-10-18 18:22</time>
         
     </div>
     <div class="article-meta">
         
-        <span>字数:68</span>
+        <span>字数:633</span>
         
         
         <span id="busuanzi_container_page_pv">
@@ -276,7 +288,7 @@
     
     <div class="toc-ref">
     
-        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#简述"><span class="toc-text">简述</span></a></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#vuex"><span class="toc-text">vuex</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#state属性"><span class="toc-text">state属性</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#getters属性"><span class="toc-text">getters属性</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#mutations"><span class="toc-text">mutations</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#actions属性"><span class="toc-text">actions属性</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#modules"><span class="toc-text">modules</span></a></li></ol></li></ol>
     
 <style>
     .left-col .switch-btn,
@@ -292,7 +304,125 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="简述"><a href="#简述" class="headerlink" title="简述"></a>简述</h2><p>之前没有借用模板，纯用react+nodejs搭建了我的第一个<a href="http://tsubasa.top/work/blog/index.html#/" target="_blank" rel="noopener">博客</a>。<br>但是效果总觉得没这么好，所以使用了hexo并参考了大佬的博客，搭了这个博客，用以来记录点滴的学习过程…</p>
+        <h1 id="vuex"><a href="#vuex" class="headerlink" title="vuex"></a>vuex</h1><p>建立store.js</p>
+<pre><code class="vue">import Vue from &#39;vue&#39;
+import Vuex from &#39;vuex&#39;
+
+Vue.use(Vuex)
+
+export default new Vuex.Store({
+  state: {
+    number:0,
+  },
+  mutations: {
+    ADD(state){
+      state.number++
+    },
+    SUB(state){
+      state.number--
+    }
+  },
+  actions: {
+
+  }
+})</code></pre>
+<p>在main.js中,将状态从根组件“注入”到每一个子组件中</p>
+<pre><code class="vue">new Vue({
+  render: h =&gt; h(App),
+  store
+}).$mount(&#39;#app&#39;)
+</code></pre>
+<p>在子组件中可以通过$store.state.number进行调用</p>
+<h2 id="state属性"><a href="#state属性" class="headerlink" title="state属性"></a>state属性</h2><p>类似与vue中data属性，用于存放属性，键值对。可以通过 mutations 和 actions 来改变state的值。使用this.$store.state.属性名称 来获取相应的值。</p>
+<h2 id="getters属性"><a href="#getters属性" class="headerlink" title="getters属性"></a>getters属性</h2><p>getters我们类比到vue中，那么它应该是 computed了 我们在使用的时候要使用 this.$store.getters.属性名   。用法也和computed类似，它实际上是调用一个方法，然后获取到的数据是经过一系列处理后并且return回来的数据。</p>
+<h2 id="mutations"><a href="#mutations" class="headerlink" title="mutations"></a>mutations</h2><p>类似与vue的methods。可以通过调用其中的函数来修改state的值。this.$store.commit(‘ADD’)来调用mutations中的方法。</p>
+<h2 id="actions属性"><a href="#actions属性" class="headerlink" title="actions属性"></a>actions属性</h2><p>actions属性用法和mutations类似，但是actions我们是不可以修改state的 需要在actions通过commit来调用mutations来修改数据，那么action的意义何在呢？处理异步事件就要用action来做了呀。调用方法是，this.$store.dispatch(“action的名字”,参数)</p>
+<p>actions 方法的第一个参数是context，类似与store实例，可以调用 <code>context.commit</code> 提交一个 mutation，或者通过 <code>context.state</code> 和 <code>context.getters</code> 来获取 state 和 getters。</p>
+<p>常用法，获取context中的commit方法，提交commit调用mutations来修改数据</p>
+<pre><code class="js">actions: {
+  increment ({ commit }) {
+    commit(&#39;increment&#39;)
+  }
+}</code></pre>
+<p>综合示例</p>
+<pre><code>// store.js
+import Vue from &#39;vue&#39;
+import Vuex from &#39;vuex&#39;
+
+Vue.use(Vuex)
+
+export default new Vuex.Store({
+  state: {
+    number:0,
+  },
+  mutations: {
+    ADD(state){ 
+      state.number++
+    },
+    SUB(state){
+      state.number--
+    },
+    ADDPARAM(state,param){
+      if (typeof param !== &#39;number&#39;){
+        param = 0
+      }
+      state.number = state.number + param
+    } 
+  },
+  actions: {
+    ASYNCADD(context,param){  //这里我们传入context上下文，里面包含 commit, state ,getters 这三个属性都可以通过context来调用到并且触发内部方法
+      setTimeout(function(){
+        context.commit(&#39;ADDPARAM&#39;,param)
+      },1000)
+    }
+  },
+  getters:{
+    getNumber(state){   //getter的书写方法
+      return state.number + 100
+    }
+  }
+})</code></pre><pre><code>&lt;!-- children.vue --&gt;
+&lt;template&gt;
+  &lt;div class=&quot;children&quot;&gt;
+    &lt;h1&gt;This is an children page&lt;/h1&gt;
+    &lt;button @click=&quot;add&quot;&gt;
+      +
+    &lt;/button&gt;
+      {{$store.state.number}}
+      {{$store.getters.getNumber}}
+      &lt;button  @click=&quot;sub&quot;&gt;
+      -
+    &lt;/button&gt;
+
+
+    &lt;button @click=&quot;actAdd&quot;&gt;action&lt;/button&gt;
+  &lt;/div&gt;
+&lt;/template&gt;
+
+&lt;script&gt;
+  export default{
+    name: &#39;children&#39;,
+    methods: {
+      add() {</code></pre><h2 id="modules"><a href="#modules" class="headerlink" title="modules"></a>modules</h2><p>Vuex 允许我们将 store 分割成<strong>模块（module）</strong>。每个模块拥有自己的 state、mutation、action、getter</p>
+<pre><code class="js">const moduleA = {
+  state: { ... },
+  mutations: { ... },
+  actions: { ... },
+  getters: { ... }
+}
+
+const moduleB = {
+  state: { ... },
+  mutations: { ... },
+  actions: { ... }
+}
+
+const store = new Vuex.Store({
+  modules: {
+    a: moduleA,
+    b: moduleB
+  }
+})</code></pre>
 
       
        <hr><span style="font-style: italic;color: gray;"> 欢迎指出任何有错误或不够清晰的表达。 </span>
