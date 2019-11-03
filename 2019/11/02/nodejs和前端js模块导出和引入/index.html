@@ -2,9 +2,9 @@
 <html>
 <head><meta name="generator" content="Hexo 3.9.0">
   <meta charset="utf-8">
-  <title>js小记录 | Hexo</title>
-  <meta name="keywords" content=" javascript ">
-  <meta name="description" content="js小记录 | Hexo">
+  <title>nodejs和前端js模块导出和引入 | Hexo</title>
+  <meta name="keywords" content=" javascript , nodejs ">
+  <meta name="description" content="nodejs和前端js模块导出和引入 | Hexo">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 <meta name="description" content="简述之前没有借用模板，纯用react+nodejs搭建了我的第一个博客。但是效果总觉得没这么好，所以使用了hexo并参考了大佬的博客，搭了这个博客，用以来记录点滴的学习过程…">
 <meta property="og:type" content="website">
@@ -312,9 +312,9 @@
 </aside>
 <div class="post">
     <div class="pjax">
-        <article id="post-js小记录" class="article article-type-post" itemscope itemprop="blogPost">
+        <article id="post-nodejs和前端js模块导出和引入" class="article article-type-post" itemscope itemprop="blogPost">
     
-        <h1 class="article-title">js小记录</h1>
+        <h1 class="article-title">nodejs和前端js模块导出和引入</h1>
     
     <div class="article-meta">
         
@@ -322,7 +322,9 @@
         
         <span class="book">
             
-                <a href="javascript:" data-rel="工具">工具</a>
+                <a href="javascript:" data-rel="前端">前端</a>/
+            
+                <a href="javascript:" data-rel="后端">后端</a>
             
         </span>
         
@@ -331,17 +333,19 @@
             
             <a href="javascript:" class="color1">javascript</a>
             
+            <a href="javascript:" class="color2">nodejs</a>
+            
         </span>
         
     </div>
     <div class="article-meta">
         
-        创建时间:<time class="date" title='更新时间: 2019-11-02 22:50:02'>2019-10-16 15:33</time>
+        创建时间:<time class="date" title='更新时间: 2019-11-03 15:13:03'>2019-11-02 22:48</time>
         
     </div>
     <div class="article-meta">
         
-        <span>字数:520</span>
+        <span>字数:904</span>
         
         
         <span id="busuanzi_container_page_pv">
@@ -360,7 +364,7 @@
     
     <div class="toc-ref">
     
-        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#foreach方法遍历数组"><span class="toc-text">foreach方法遍历数组</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#map方法"><span class="toc-text">map方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#for-in遍历数组"><span class="toc-text">for  in遍历数组</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#for-of-遍历数组"><span class="toc-text">for of 遍历数组</span></a></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#前言"><span class="toc-text">前言</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#node中模块导入和导出"><span class="toc-text">node中模块导入和导出</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#module"><span class="toc-text">module</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#module-exports和exports"><span class="toc-text">module.exports和exports</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#require"><span class="toc-text">require</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#在前端js中的模块导入和导出"><span class="toc-text">在前端js中的模块导入和导出</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#export"><span class="toc-text">export</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#import"><span class="toc-text">import</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#export-default"><span class="toc-text">export default</span></a></li></ol></li></ol>
     
 <style>
     .left-col .switch-btn,
@@ -376,45 +380,136 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="foreach方法遍历数组"><a href="#foreach方法遍历数组" class="headerlink" title="foreach方法遍历数组"></a>foreach方法遍历数组</h2><p>相对与for循环来遍历数组，更快捷的写法</p>
-<pre><code class="javascript">let a = [1, 2, 3, 4, 5, 6, 7, 8, 9,&quot;151&quot; , 10]
+        <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>经常容易忘记node的模块导入和导出的细节，还有就是上次作业node和前端js导入导出分不清，所以特意进行测试记录</p>
+<h1 id="node中模块导入和导出"><a href="#node中模块导入和导出" class="headerlink" title="node中模块导入和导出"></a>node中模块导入和导出</h1><p><a href="https://segmentfault.com/a/1190000014305806#articleHeader10" target="_blank" rel="noopener">学习网址</a></p>
+<h2 id="module"><a href="#module" class="headerlink" title="module"></a>module</h2><p>node中的module对象，通过console.log(),可以看到以下结果</p>
+<pre><code class="js">Module {
+  id: &#39;.&#39;,
+  exports: {},
+  parent: null,
+  filename: &#39;D:\\vscode_work\\houduanwork\\test\\test.js&#39;,
+  loaded: false,
+  children: [],
+  paths:
+   [ &#39;D:\\vscode_work\\houduanwork\\test\\node_modules&#39;,
+     &#39;D:\\vscode_work\\houduanwork\\node_modules&#39;,
+     &#39;D:\\vscode_work\\node_modules&#39;,
+     &#39;D:\\node_modules&#39; ] }</code></pre>
+<blockquote>
+<p>module.filename 模块的文件名，带有绝对路径。<br>module.loaded 返回一个布尔值，表示模块是否已经完成加载。<br>module.parent 返回一个对象，表示调用该模块的模块对象。<br>module.children 返回一个数组，表示该模块要用到的其他模块对象。<br>module.exports 表示模块对外输出的值。</p>
+</blockquote>
+<h2 id="module-exports和exports"><a href="#module-exports和exports" class="headerlink" title="module.exports和exports"></a>module.exports和exports</h2><p>module.exports={a:”1”,b:”2”}</p>
+<p>exports.a:”1”</p>
+<p>exports.b:”2”</p>
+<p>module.exports和exports两者结果相同.</p>
+<p>本质上两者等同于如下关系。公用同一个对象。</p>
+<pre><code class="js">let exports = module.exports;</code></pre>
+<p>在新版的node中不支持export和export default。<strong>所以在node中文件导出基本就是对module.exports进行操作.</strong></p>
+<h2 id="require"><a href="#require" class="headerlink" title="require"></a>require</h2><p>//foo.js</p>
+<pre><code class="js">var firstName = &#39;Michael&#39;;
+var lastName = &#39;Jackson&#39;;
 
-a.forEach((value, index ,self) =&gt; { 
-    console.log(value,index,self) }
-)</code></pre>
-<p>结果为</p>
-<p>1 0 [ 1, 2, 3, 4, 5, 6, 7, 8, 9, ‘151’, 10 ]<br>2 1 [ 1, 2, 3, 4, 5, 10, 7, 8, 9, ‘151’, 10 ]<br>3 2 [ 1, 2, 3, 4, 5, 10, 7, 8, 9, ‘151’, 10 ]<br>4 3 [ 1, 2, 3, 4, 5, 10, 7, 8, 9, ‘151’, 10 ]<br>5 4 [ 1, 2, 3, 4, 5, 10, 7, 8, 9, ‘151’, 10 ]<br>10 5 [ 1, 2, 3, 4, 5, 10, 7, 8, 9, ‘151’, 10 ]<br>7 6 [ 1, 2, 3, 4, 5, 10, 7, 8, 9, ‘151’, 10 ]<br>8 7 [ 1, 2, 3, 4, 5, 10, 7, 8, 9, ‘151’, 10 ]<br>9 8 [ 1, 2, 3, 4, 5, 10, 7, 8, 9, ‘151’, 10 ]<br>151 9 [ 1, 2, 3, 4, 5, 10, 7, 8, 9, ‘151’, 10 ]<br>10 10 [ 1, 2, 3, 4, 5, 10, 7, 8, 9, ‘151’, 10 ]</p>
-<p>foreach方法</p>
-<p>传入一个回调函数，回调函数参数为 值，序号，数组本身</p>
-<ul>
-<li><p>foreach方法没有返回值</p>
-</li>
-<li><p>foreach方法会忽略数组中undefine的值</p>
-</li>
-</ul>
-<h2 id="map方法"><a href="#map方法" class="headerlink" title="map方法"></a>map方法</h2><p>与foreach方法类似</p>
-<pre><code class="javascript">let a = [1, 2, 3, 4, 5, 6, 7, 8, 9, , 10]
+exports.ahh = firstName;
+exports.lastName = lastName;</code></pre>
+<p>//test.js</p>
+<pre><code class="js">const  hh = require(&#39;./foo&#39;);
+console.log(hh);
+//{ ahh: &#39;Michael&#39;, lastName: &#39;Jackson&#39; }</code></pre>
+<p>require接受的是对应的module.exports中的数据,一般为对象.所以经常用解构赋值获取其中的值.</p>
+<pre><code class="js">const  {ahh,lastName} = require(&#39;./foo&#39;);
+console.log(ahh,lastName);
+//Michael Jackson</code></pre>
+<p>require同一个文件多次只有最后一次有效.</p>
+<p>导入模块在node中只有require.</p>
+<h1 id="在前端js中的模块导入和导出"><a href="#在前端js中的模块导入和导出" class="headerlink" title="在前端js中的模块导入和导出"></a>在前端js中的模块导入和导出</h1><p><a href="http://es6.ruanyifeng.com/#docs/module" target="_blank" rel="noopener">学习网址</a></p>
+<p>在非webpack中，在html引入需要引用其他模块的js，需要将 type=”module” 否则</p>
+<p>出现Cannot use import statement outside a module</p>
+<pre><code class="html">&lt;script src=&quot;./test.js&quot; type=&quot;module&quot;&gt;&lt;/script&gt;</code></pre>
+<h2 id="export"><a href="#export" class="headerlink" title="export"></a>export</h2><p>export导出模块要注意写法，因为export命令规定的是对外的接口，必须与模块内部的变量建立一一对应关系，也就是说必须要提供一个key一个value值。下面的错误写法，本质上都是只提供了一个值。</p>
+<p>错误写法：</p>
+<pre><code class="javascript">// 报错
+export 1;
 
-let b = a.map((value, index ,self) =&gt; { 
-    return [value,index] }
-)
-console.log(b)</code></pre>
-<p>[ [ 1, 0 ],<br>  [ 2, 1 ],<br>  [ 3, 2 ],<br>  [ 4, 3 ],<br>  [ 5, 4 ],<br>  [ 6, 5 ],<br>  [ 7, 6 ],<br>  [ 8, 7 ],<br>  [ 9, 8 ],<br>  &lt;1 empty item&gt;,<br>  [ 10, 10 ] ]</p>
-<p>不同的是map方法有返回值，map方法会遍历数组，return的结果最后会被组合成为一个新的数组返回。且map方法不会跳过空白值。</p>
-<h2 id="for-in遍历数组"><a href="#for-in遍历数组" class="headerlink" title="for  in遍历数组"></a>for  in遍历数组</h2><p>主要用于对象，用于数组可能不是按数组内部顺序进行遍历，for in遍历数组的索引值。主要用于普通对象。</p>
-<h2 id="for-of-遍历数组"><a href="#for-of-遍历数组" class="headerlink" title="for of 遍历数组"></a>for of 遍历数组</h2><p>相较于for in，for of遍历数组的值，相较于foreach，for of可以使用break，continue等。可应用maps，set，array等可迭代对象，以及类数组对象。但是一般对象无法使用。要想遍历所有对象，搭配object.keys（）来使用。</p>
-<pre><code class="javascript">const iterable = [1,,8,454];
+// 报错
+var m = 1;
+export m;</code></pre>
+<p>正确写法：</p>
+<pre><code class="javascript">// 写法一
+export var m = 1;
 
-for(let i of iterable){
-    console.log(i)
+// 写法二
+var m = 1;
+export {m};</code></pre>
+<p>同理 function和class的输出，也遵循这种写法</p>
+<pre><code class="javascript">// 报错
+function f() {}
+export f;
+
+// 正确
+export function f() {};
+
+// 正确
+function f() {}
+export {f};</code></pre>
+<p>export可以任意位置，任意多个，但是不能放在块级作用域比如说函数中</p>
+<h2 id="import"><a href="#import" class="headerlink" title="import"></a>import</h2><p>通过import…from加载模块，变量名必须和接口名一致，可以通过as进行重命名</p>
+<pre><code>import {a,b} from &quot;./foo.js&quot;
+import {a,b as ahh} from &quot;./foo.js&quot;</code></pre><p>import 可以直接去执行被import的模块</p>
+<p>test.js</p>
+<pre><code class="js">import &quot;./foo.js&quot;</code></pre>
+<p>foo.js</p>
+<pre><code class="js">console.log(&quot;233&quot;)
+//浏览器中可以看到输出</code></pre>
+<h2 id="export-default"><a href="#export-default" class="headerlink" title="export default"></a>export default</h2><p>相比较与export，export default不需要知道所要加载的变量名称。使用import时可以任意命名。</p>
+<p>test.js</p>
+<pre><code class="js">import ahh from &quot;./foo.js&quot;
+ahh()//foo</code></pre>
+<p>foo.js</p>
+<pre><code class="js">export default function () {
+    console.log(&#39;foo&#39;);
 }</code></pre>
-<p>1<br>undefined<br>8<br>454</p>
-<pre><code class="javascript">const iterable = new Map([[&#39;one&#39;, 1], [&#39;two&#39;, 2]]);
+<p>export default中函数名在模块外部无效。</p>
+<pre><code class="js">// export-default.js
+export default function foo() {
+  console.log(&#39;foo&#39;);
+}
 
-for (const [key, value] of iterable) {
-  console.log(`Key: ${key} and Value: ${value}`);
-}</code></pre>
-<p>Key: one and Value: 1<br>Key: two and Value: 2</p>
+// 或者写成  在export中这种写法无效
+
+function foo() {
+  console.log(&#39;foo&#39;);
+}
+
+export default foo;</code></pre>
+<p>export default 本质上就是输出一个default的变量或者方法</p>
+<pre><code class="javascript">// modules.js
+function add(x, y) {
+  return x * y;
+}
+export {add as default};
+// 等同于
+// export default add;
+
+// app.js
+import { default as foo } from &#39;modules&#39;;
+// 等同于
+// import foo from &#39;modules&#39;;</code></pre>
+<p>因此</p>
+<pre><code class="js">// 正确
+export var a = 1;
+
+// 正确
+var a = 1;
+export default a;
+
+// 错误
+export default var a = 1;
+
+// 正确
+export default 42;
+
+// 报错
+export 42;</code></pre>
 
       
        <hr><span style="font-style: italic;color: gray;"> 欢迎指出任何有错误或不够清晰的表达。 </span>

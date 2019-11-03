@@ -4,11 +4,140 @@
   
     
     <entry>
+      <title>vuex</title>
+      <link href="/2019/11/03/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E6%80%BB%E7%BB%93%E5%A4%8D%E4%B9%A0/"/>
+      <url>/2019/11/03/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E6%80%BB%E7%BB%93%E5%A4%8D%E4%B9%A0/</url>
+      
+        <content type="html"><![CDATA[<h1 id="校园网设计实验"><a href="#校园网设计实验" class="headerlink" title="校园网设计实验"></a>校园网设计实验</h1><p><img src="D:%5Cvscode_work%5Cblog%5Csource%5Cimg%5C1572766033325.png" alt="1572766033325"></p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 其他 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 计算机网络 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>nodejs和前端js模块导出和引入</title>
+      <link href="/2019/11/02/nodejs%E5%92%8C%E5%89%8D%E7%AB%AFjs%E6%A8%A1%E5%9D%97%E5%AF%BC%E5%87%BA%E5%92%8C%E5%BC%95%E5%85%A5/"/>
+      <url>/2019/11/02/nodejs%E5%92%8C%E5%89%8D%E7%AB%AFjs%E6%A8%A1%E5%9D%97%E5%AF%BC%E5%87%BA%E5%92%8C%E5%BC%95%E5%85%A5/</url>
+      
+        <content type="html"><![CDATA[<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>经常容易忘记node的模块导入和导出的细节，还有就是上次作业node和前端js导入导出分不清，所以特意进行测试记录</p><h1 id="node中模块导入和导出"><a href="#node中模块导入和导出" class="headerlink" title="node中模块导入和导出"></a>node中模块导入和导出</h1><p><a href="https://segmentfault.com/a/1190000014305806#articleHeader10" target="_blank" rel="noopener">学习网址</a></p><h2 id="module"><a href="#module" class="headerlink" title="module"></a>module</h2><p>node中的module对象，通过console.log(),可以看到以下结果</p><pre><code class="js">Module {  id: &#39;.&#39;,  exports: {},  parent: null,  filename: &#39;D:\\vscode_work\\houduanwork\\test\\test.js&#39;,  loaded: false,  children: [],  paths:   [ &#39;D:\\vscode_work\\houduanwork\\test\\node_modules&#39;,     &#39;D:\\vscode_work\\houduanwork\\node_modules&#39;,     &#39;D:\\vscode_work\\node_modules&#39;,     &#39;D:\\node_modules&#39; ] }</code></pre><blockquote><p>module.filename 模块的文件名，带有绝对路径。<br>module.loaded 返回一个布尔值，表示模块是否已经完成加载。<br>module.parent 返回一个对象，表示调用该模块的模块对象。<br>module.children 返回一个数组，表示该模块要用到的其他模块对象。<br>module.exports 表示模块对外输出的值。</p></blockquote><h2 id="module-exports和exports"><a href="#module-exports和exports" class="headerlink" title="module.exports和exports"></a>module.exports和exports</h2><p>module.exports={a:”1”,b:”2”}</p><p>exports.a:”1”</p><p>exports.b:”2”</p><p>module.exports和exports两者结果相同.</p><p>本质上两者等同于如下关系。公用同一个对象。</p><pre><code class="js">let exports = module.exports;</code></pre><p>在新版的node中不支持export和export default。<strong>所以在node中文件导出基本就是对module.exports进行操作.</strong></p><h2 id="require"><a href="#require" class="headerlink" title="require"></a>require</h2><p>//foo.js</p><pre><code class="js">var firstName = &#39;Michael&#39;;var lastName = &#39;Jackson&#39;;exports.ahh = firstName;exports.lastName = lastName;</code></pre><p>//test.js</p><pre><code class="js">const  hh = require(&#39;./foo&#39;);console.log(hh);//{ ahh: &#39;Michael&#39;, lastName: &#39;Jackson&#39; }</code></pre><p>require接受的是对应的module.exports中的数据,一般为对象.所以经常用解构赋值获取其中的值.</p><pre><code class="js">const  {ahh,lastName} = require(&#39;./foo&#39;);console.log(ahh,lastName);//Michael Jackson</code></pre><p>require同一个文件多次只有最后一次有效.</p><p>导入模块在node中只有require.</p><h1 id="在前端js中的模块导入和导出"><a href="#在前端js中的模块导入和导出" class="headerlink" title="在前端js中的模块导入和导出"></a>在前端js中的模块导入和导出</h1><p><a href="http://es6.ruanyifeng.com/#docs/module" target="_blank" rel="noopener">学习网址</a></p><p>在非webpack中，在html引入需要引用其他模块的js，需要将 type=”module” 否则</p><p>出现Cannot use import statement outside a module</p><pre><code class="html">&lt;script src=&quot;./test.js&quot; type=&quot;module&quot;&gt;&lt;/script&gt;</code></pre><h2 id="export"><a href="#export" class="headerlink" title="export"></a>export</h2><p>export导出模块要注意写法，因为export命令规定的是对外的接口，必须与模块内部的变量建立一一对应关系，也就是说必须要提供一个key一个value值。下面的错误写法，本质上都是只提供了一个值。</p><p>错误写法：</p><pre><code class="javascript">// 报错export 1;// 报错var m = 1;export m;</code></pre><p>正确写法：</p><pre><code class="javascript">// 写法一export var m = 1;// 写法二var m = 1;export {m};</code></pre><p>同理 function和class的输出，也遵循这种写法</p><pre><code class="javascript">// 报错function f() {}export f;// 正确export function f() {};// 正确function f() {}export {f};</code></pre><p>export可以任意位置，任意多个，但是不能放在块级作用域比如说函数中</p><h2 id="import"><a href="#import" class="headerlink" title="import"></a>import</h2><p>通过import…from加载模块，变量名必须和接口名一致，可以通过as进行重命名</p><pre><code>import {a,b} from &quot;./foo.js&quot;import {a,b as ahh} from &quot;./foo.js&quot;</code></pre><p>import 可以直接去执行被import的模块</p><p>test.js</p><pre><code class="js">import &quot;./foo.js&quot;</code></pre><p>foo.js</p><pre><code class="js">console.log(&quot;233&quot;)//浏览器中可以看到输出</code></pre><h2 id="export-default"><a href="#export-default" class="headerlink" title="export default"></a>export default</h2><p>相比较与export，export default不需要知道所要加载的变量名称。使用import时可以任意命名。</p><p>test.js</p><pre><code class="js">import ahh from &quot;./foo.js&quot;ahh()//foo</code></pre><p>foo.js</p><pre><code class="js">export default function () {    console.log(&#39;foo&#39;);}</code></pre><p>export default中函数名在模块外部无效。</p><pre><code class="js">// export-default.jsexport default function foo() {  console.log(&#39;foo&#39;);}// 或者写成  在export中这种写法无效function foo() {  console.log(&#39;foo&#39;);}export default foo;</code></pre><p>export default 本质上就是输出一个default的变量或者方法</p><pre><code class="javascript">// modules.jsfunction add(x, y) {  return x * y;}export {add as default};// 等同于// export default add;// app.jsimport { default as foo } from &#39;modules&#39;;// 等同于// import foo from &#39;modules&#39;;</code></pre><p>因此</p><pre><code class="js">// 正确export var a = 1;// 正确var a = 1;export default a;// 错误export default var a = 1;// 正确export default 42;// 报错export 42;</code></pre>]]></content>
+      
+      
+      <categories>
+          
+          <category> 前端 </category>
+          
+          <category> 后端 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> javascript </tag>
+            
+            <tag> nodejs </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>nodejs随笔记录</title>
+      <link href="/2019/10/31/nodejs%E9%9A%8F%E7%AC%94%E8%AE%B0%E5%BD%95/"/>
+      <url>/2019/10/31/nodejs%E9%9A%8F%E7%AC%94%E8%AE%B0%E5%BD%95/</url>
+      
+        <content type="html"><![CDATA[<h2 id="关于中间件"><a href="#关于中间件" class="headerlink" title="关于中间件"></a>关于中间件</h2><p>中间件在nodejs中功能是访问请求对象req，响应对象res，修改或者解析这两者对象，将新的对象属性插入其中。</p><h3 id="body-parser"><a href="#body-parser" class="headerlink" title="body-parser"></a>body-parser</h3><p>主要用于解析请求体，并将解析完成的请求体添加到req中，通过req.body可以获取得到</p><pre><code class="js">var bodyParser = require(&#39;body-parser&#39;);//To parse URL encoded dataapp.use(bodyParser.urlencoded({ extended: false }))//To parse json dataapp.use(bodyParser.json())...//在post请求中，通过req.body得到数据app.post(&#39;/&#39;, function(req, res){  let params = JSON.stringify(req.body)  console.log(params)  res.send(params)});</code></pre><h3 id="cookie-parser-cookie解析器"><a href="#cookie-parser-cookie解析器" class="headerlink" title="cookie-parser cookie解析器"></a>cookie-parser cookie解析器</h3><p>同理。将cookie添加到req.cookies中。</p><pre><code class="js">var cookieParser = require(&#39;cookie-parser&#39;);app.use(cookieParser())</code></pre><h2 id="静态文件"><a href="#静态文件" class="headerlink" title="静态文件"></a>静态文件</h2><pre><code class="js">//创建静态目录，在src下的图片可以通过以下方式进行访问静态资源//http://localhost:3000/1.jpegapp.use(express.static(path.join(__dirname, &#39;/src&#39;)));</code></pre><p>虚拟路径前缀</p><pre><code class="js">//增加一个虚拟前缀//http://localhost:3000/static/1.jpegapp.use(&#39;/static&#39;, express.static(&#39;public&#39;));</code></pre><h2 id="multer"><a href="#multer" class="headerlink" title="multer"></a>multer</h2><p>用于multipart/form-data的body，文件上传，批量上传</p><p>简单用法.将上传的文件保存到file中。高级用法详见github文档</p><pre><code class="js">var multer  = require(&#39;multer&#39;)var upload = multer( {dest:&#39;uploads&#39;})app.post(&#39;/&#39;, upload.single(&#39;avatar&#39;), function (req, res, next) {  let file = req.file  let params = req.body  res.send(&#39;upload finished&#39;)})</code></pre>]]></content>
+      
+      
+      <categories>
+          
+          <category> 后端 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> nodejs </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>vue-router</title>
+      <link href="/2019/10/18/vue-router/"/>
+      <url>/2019/10/18/vue-router/</url>
+      
+        <content type="html"><![CDATA[<h1 id="vue-router"><a href="#vue-router" class="headerlink" title="vue-router"></a>vue-router</h1><h3 id="路由对象属性"><a href="#路由对象属性" class="headerlink" title="路由对象属性"></a>路由对象属性</h3><ul><li><p><strong>$route.path</strong></p><ul><li><p>类型: <code>string</code></p><p>字符串，对应当前路由的路径，总是解析为绝对路径，如 <code>&quot;/foo/bar&quot;</code>。</p></li></ul></li><li><p><strong>$route.params</strong> </p><p>params 参数，获取动态路由的参数</p><ul><li><p>类型: <code>Object</code></p><p>一个 key/value 对象，包含了动态片段和全匹配片段，如果没有路由参数，就是一个空对象。</p></li></ul></li><li><p><strong>$route.query</strong></p><p>query 查询 ，获取url  ？后的查询参数</p><ul><li><p>类型: <code>Object</code></p><p>一个 key/value 对象，表示 URL 查询参数。例如，对于路径 <code>/foo?user=1</code>，则有 <code>$route.query.user == 1</code>，如果没有查询参数，则是个空对象。</p></li></ul></li><li><p><strong>this.$router.push()</strong></p><p>描述：跳转到不同的url，但这个方法会向history栈添加一个记录，点击后退会返回到上一个页面。</p></li><li><p><strong>this.$router.replace()</strong></p><p>描述：同样是跳转到指定的url，但是这个方法不会向history里面添加新的记录，点击返回，会跳转到上上一个页面。上一个记录是不存在的。</p></li></ul>]]></content>
+      
+      
+      <categories>
+          
+          <category> 前端 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> vue-router </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>vuex</title>
+      <link href="/2019/10/18/vuex/"/>
+      <url>/2019/10/18/vuex/</url>
+      
+        <content type="html"><![CDATA[<h1 id="vuex"><a href="#vuex" class="headerlink" title="vuex"></a>vuex</h1><p>建立store.js</p><pre><code class="vue">import Vue from &#39;vue&#39;import Vuex from &#39;vuex&#39;Vue.use(Vuex)export default new Vuex.Store({  state: {    number:0,  },  mutations: {    ADD(state){      state.number++    },    SUB(state){      state.number--    }  },  actions: {  }})</code></pre><p>在main.js中,将状态从根组件“注入”到每一个子组件中</p><pre><code class="vue">new Vue({  render: h =&gt; h(App),  store}).$mount(&#39;#app&#39;)</code></pre><p>在子组件中可以通过$store.state.number进行调用</p><h2 id="state属性"><a href="#state属性" class="headerlink" title="state属性"></a>state属性</h2><p>类似与vue中data属性，用于存放属性，键值对。可以通过 mutations 和 actions 来改变state的值。使用this.$store.state.属性名称 来获取相应的值。</p><h2 id="getters属性"><a href="#getters属性" class="headerlink" title="getters属性"></a>getters属性</h2><p>getters我们类比到vue中，那么它应该是 computed了 我们在使用的时候要使用 this.$store.getters.属性名   。用法也和computed类似，它实际上是调用一个方法，然后获取到的数据是经过一系列处理后并且return回来的数据。</p><h2 id="mutations"><a href="#mutations" class="headerlink" title="mutations"></a>mutations</h2><p>类似与vue的methods。可以通过调用其中的函数来修改state的值。this.$store.commit(‘ADD’)来调用mutations中的方法。</p><h2 id="actions属性"><a href="#actions属性" class="headerlink" title="actions属性"></a>actions属性</h2><p>actions属性用法和mutations类似，但是actions我们是不可以修改state的 需要在actions通过commit来调用mutations来修改数据，那么action的意义何在呢？处理异步事件就要用action来做了呀。调用方法是，this.$store.dispatch(“action的名字”,参数)</p><p>actions 方法的第一个参数是context，类似与store实例，可以调用 <code>context.commit</code> 提交一个 mutation，或者通过 <code>context.state</code> 和 <code>context.getters</code> 来获取 state 和 getters。</p><p>常用法，获取context中的commit方法，提交commit调用mutations来修改数据</p><pre><code class="js">actions: {  increment ({ commit }) {    commit(&#39;increment&#39;)  }}</code></pre><p>综合示例</p><pre><code>// store.jsimport Vue from &#39;vue&#39;import Vuex from &#39;vuex&#39;Vue.use(Vuex)export default new Vuex.Store({  state: {    number:0,  },  mutations: {    ADD(state){       state.number++    },    SUB(state){      state.number--    },    ADDPARAM(state,param){      if (typeof param !== &#39;number&#39;){        param = 0      }      state.number = state.number + param    }   },  actions: {    ASYNCADD(context,param){  //这里我们传入context上下文，里面包含 commit, state ,getters 这三个属性都可以通过context来调用到并且触发内部方法      setTimeout(function(){        context.commit(&#39;ADDPARAM&#39;,param)      },1000)    }  },  getters:{    getNumber(state){   //getter的书写方法      return state.number + 100    }  }})</code></pre><pre><code>&lt;!-- children.vue --&gt;&lt;template&gt;  &lt;div class=&quot;children&quot;&gt;    &lt;h1&gt;This is an children page&lt;/h1&gt;    &lt;button @click=&quot;add&quot;&gt;      +    &lt;/button&gt;      {{$store.state.number}}      {{$store.getters.getNumber}}      &lt;button  @click=&quot;sub&quot;&gt;      -    &lt;/button&gt;    &lt;button @click=&quot;actAdd&quot;&gt;action&lt;/button&gt;  &lt;/div&gt;&lt;/template&gt;&lt;script&gt;  export default{    name: &#39;children&#39;,    methods: {      add() {</code></pre><h2 id="modules"><a href="#modules" class="headerlink" title="modules"></a>modules</h2><p>Vuex 允许我们将 store 分割成<strong>模块（module）</strong>。每个模块拥有自己的 state、mutation、action、getter</p><pre><code class="js">const moduleA = {  state: { ... },  mutations: { ... },  actions: { ... },  getters: { ... }}const moduleB = {  state: { ... },  mutations: { ... },  actions: { ... }}const store = new Vuex.Store({  modules: {    a: moduleA,    b: moduleB  }})</code></pre><p>对于模块内部的 mutation 和 getter，接收的第一个参数是<strong>模块的局部状态对象</strong>。</p><pre><code class="js">const moduleA = {  state: { count: 0 },  mutations: {    increment (state) {      // 这里的 `state` 对象是模块的局部状态      state.count++    }  },  getters: {    doubleCount (state) {      return state.count * 2    }  }}</code></pre><p>对于模块内部的 action，局部状态通过 <code>context.state</code> 暴露出来，根节点状态则为 <code>context.rootState</code></p><pre><code class="js">const moduleA = {  // ...  actions: {    incrementIfOddOnRootSum ({ state, commit, rootState }) {      if ((state.count + rootState.count) % 2 === 1) {        commit(&#39;increment&#39;)      }    }  }}</code></pre>]]></content>
+      
+      
+      <categories>
+          
+          <category> 前端 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> vuex </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>vue-element-admin学习之旅</title>
       <link href="/2019/10/18/vue-element-admin%E5%AD%A6%E4%B9%A0%E4%B9%8B/"/>
       <url>/2019/10/18/vue-element-admin%E5%AD%A6%E4%B9%A0%E4%B9%8B/</url>
       
-        <content type="html"><![CDATA[<p><a href="https://juejin.im/post/59097cd7a22b9d0065fb61d2#heading-11" target="_blank" rel="noopener">学习网址</a></p><h1 id="axios封装"><a href="#axios封装" class="headerlink" title="axios封装"></a>axios封装</h1><p>在vue-element-admin中，已经对axios进行了封装。其中下面的requset.js主要是使用axios.create创建一个实例，为这个实例设置基础路径，对请求和响应增设拦截器，进行统一的操作。</p><pre><code class="js">import axios from &#39;axios&#39;import { MessageBox, Message } from &#39;element-ui&#39;import store from &#39;@/store&#39;import { getToken } from &#39;@/utils/auth&#39;//@ alias 别名指向src目录 在config.js中设置// 创建axios实例const service = axios.create({  baseURL: process.env.VUE_APP_BASE_API, // url = base url + request url  // withCredentials: true, // send cookies when cross-domain requests  timeout: 5000 // request timeout})// request 拦截器service.interceptors.request.use(  config =&gt; {    //发送请求之前操作，若存在token则向头部添加x-token    if (store.getters.token) {      // let each request carry token      // [&#39;X-Token&#39;] is a custom headers key      // please modify it according to the actual situation      config.headers[&#39;X-Token&#39;] = getToken()    }    return config  },  error =&gt; {    // do something with request error    console.log(error) // for debug    return Promise.reject(error)  })// 响应拦截器service.interceptors.response.use(  /**   * If you want to get http information such as headers or status   * Please return  response =&gt; response  */  /**   * Determine the request status by custom code   * Here is just an example   * You can also judge the status by HTTP Status Code   */  response =&gt; {    const res = response.data    //根据返回码进行相应的处理    // if the custom code is not 20000, it is judged as an error.    if (res.code !== 20000) {      Message({        message: res.message || &#39;Error&#39;,        type: &#39;error&#39;,        duration: 5 * 1000      })      // 50008: Illegal token; 50012: Other clients logged in; 50014: Token expired;      if (res.code === 50008 || res.code === 50012 || res.code === 50014) {        // to re-login        MessageBox.confirm(&#39;You have been logged out, you can cancel to stay on this page, or log in again&#39;, &#39;Confirm logout&#39;, {          confirmButtonText: &#39;Re-Login&#39;,          cancelButtonText: &#39;Cancel&#39;,          type: &#39;warning&#39;        }).then(() =&gt; {          store.dispatch(&#39;user/resetToken&#39;).then(() =&gt; {            location.reload()          })        })      }      return Promise.reject(new Error(res.message || &#39;Error&#39;))    } else {      return res    }  },  error =&gt; {    console.log(&#39;err&#39; + error) // for debug    Message({      message: error.message,      type: &#39;error&#39;,      duration: 5 * 1000    })    return Promise.reject(error)  })export default service</code></pre><p>以这个实例为基础，在@/api 中添加配置，加入请求路径，请求方法，请求数据。</p><pre><code class="js">import request from &#39;@/utils/request&#39;export function fetchList(query) {  return request({    url: &#39;/article/list&#39;,    method: &#39;get&#39;,    params: query  })}</code></pre><p>这样只需要在对应的页面中调用该方法发起请求,然后写处理函数。</p><p>fetchList(query).then(res=&gt;{</p><p>})</p><h1 id="Swagger"><a href="#Swagger" class="headerlink" title="Swagger"></a>Swagger</h1><h1 id="easy-mock"><a href="#easy-mock" class="headerlink" title="easy-mock"></a>easy-mock</h1>]]></content>
+        <content type="html"><![CDATA[<p><a href="https://juejin.im/post/59097cd7a22b9d0065fb61d2#heading-11" target="_blank" rel="noopener">学习网址</a></p><h1 id="axios封装"><a href="#axios封装" class="headerlink" title="axios封装"></a>axios封装</h1><p>在vue-element-admin中，已经对axios进行了封装。其中下面的requset.js主要是使用axios.create创建一个实例，为这个实例设置基础路径，对请求和响应增设拦截器，进行统一的操作。</p><pre><code class="js">import axios from &#39;axios&#39;import { MessageBox, Message } from &#39;element-ui&#39;import store from &#39;@/store&#39;import { getToken } from &#39;@/utils/auth&#39;//@ alias 别名指向src目录 在config.js中设置// 创建axios实例const service = axios.create({  baseURL: process.env.VUE_APP_BASE_API, // url = base url + request url  // withCredentials: true, // send cookies when cross-domain requests  timeout: 5000 // request timeout})// request 拦截器service.interceptors.request.use(  config =&gt; {    //发送请求之前操作，若存在token则向头部添加x-token    if (store.getters.token) {      // let each request carry token      // [&#39;X-Token&#39;] is a custom headers key      // please modify it according to the actual situation      config.headers[&#39;X-Token&#39;] = getToken()    }    return config  },  error =&gt; {    // do something with request error    console.log(error) // for debug    return Promise.reject(error)  })// 响应拦截器service.interceptors.response.use(  /**   * If you want to get http information such as headers or status   * Please return  response =&gt; response  */  /**   * Determine the request status by custom code   * Here is just an example   * You can also judge the status by HTTP Status Code   */  response =&gt; {    const res = response.data    //根据返回码进行相应的处理    // if the custom code is not 20000, it is judged as an error.    if (res.code !== 20000) {      Message({        message: res.message || &#39;Error&#39;,        type: &#39;error&#39;,        duration: 5 * 1000      })      // 50008: Illegal token; 50012: Other clients logged in; 50014: Token expired;      if (res.code === 50008 || res.code === 50012 || res.code === 50014) {        // to re-login        MessageBox.confirm(&#39;You have been logged out, you can cancel to stay on this page, or log in again&#39;, &#39;Confirm logout&#39;, {          confirmButtonText: &#39;Re-Login&#39;,          cancelButtonText: &#39;Cancel&#39;,          type: &#39;warning&#39;        }).then(() =&gt; {          store.dispatch(&#39;user/resetToken&#39;).then(() =&gt; {            location.reload()          })        })      }      return Promise.reject(new Error(res.message || &#39;Error&#39;))    } else {      return res    }  },  error =&gt; {    console.log(&#39;err&#39; + error) // for debug    Message({      message: error.message,      type: &#39;error&#39;,      duration: 5 * 1000    })    return Promise.reject(error)  })export default service</code></pre><p>以这个实例为基础，在@/api 中添加配置，加入请求路径，请求方法，请求数据。</p><pre><code class="js">import request from &#39;@/utils/request&#39;export function fetchList(query) {  return request({    url: &#39;/article/list&#39;,    method: &#39;get&#39;,    params: query  })}</code></pre><p>这样只需要在对应的页面中调用该方法发起请求,然后写处理函数。</p><p>fetchList(query).then(res=&gt;{</p><p>})</p><h1 id="Swagger"><a href="#Swagger" class="headerlink" title="Swagger"></a>Swagger</h1><h1 id="easy-mock"><a href="#easy-mock" class="headerlink" title="easy-mock"></a>easy-mock</h1><h1 id="登录流程与权限控制"><a href="#登录流程与权限控制" class="headerlink" title="登录流程与权限控制"></a>登录流程与权限控制</h1><ol><li>触发click事件触发登录操作。执行vuex中响应的action</li></ol><pre><code class="js">this.$store.dispatch(&#39;user/login&#39;, this.loginForm)            .then(() =&gt; {              this.$router.push({ path: this.redirect || &#39;/&#39;, query: this.otherQuery })              this.loading = false            })            .catch(() =&gt; {              this.loading = false            })</code></pre><ol start="2"><li>action。action返回一个promise，供上面继续操作。在action中调用api中的login登录函数，若登录成功则将token放入vuex和cookie中。login函数则是上方axios封装过后的函数。</li></ol><pre><code class="js">login({ commit }, userInfo) {    const { username, password } = userInfo    //返回一个promise实例    return new Promise((resolve, reject) =&gt; {      //登录请求函数      login({ username: username.trim(), password: password }).then(response =&gt; {        const { data } = response        //调用commit设置token        commit(&#39;SET_TOKEN&#39;, data.token)        //token存入cookie中        setToken(data.token)        //执行成功        resolve()      }).catch(error =&gt; {        //执行出错，传递错误原因        reject(error)      })    })  }</code></pre><ol start="3"><li>获取用户信息。获取用户信息和登录获取token分隔开。获取信息的时机在全局钩子<code>router.beforeEach</code>中拦截路由，判断是否已获得token，在获得token之后去获取用户的基本信息。也就是说每一次路由跳转的时候会进行检测，是否有token，没有则进行登录。有那么查看vuex是否有身份信息，如果有则进入指定路由。如果没有身份信息则通过token去获取身份信息。    </li></ol><pre><code class="js">//  ./permission.js router.beforeEach(async(to, from, next) =&gt; {  // 进度条显示  NProgress.start()  // 设置页面标题  document.title = getPageTitle(to.meta.title)  // 从cookie中得到token  const hasToken = getToken()  // token存在  if (hasToken) {    if (to.path === &#39;/login&#39;) {      // 如果已经有了token，说明已经登录，那么这是前往登录路由的，重定向到初始页面      next({ path: &#39;/&#39; })      //进度条结束      NProgress.done()    } else {//有了token进入其他路由      // determine whether the user has obtained his permission roles through getInfo      // 判断当前用户是否已拉取完user_info信息      const hasRoles = store.getters.roles &amp;&amp; store.getters.roles.length &gt; 0      if (hasRoles) {        //已经有身份信息，进入目标路由        next()      } else {//没有身份信息，去获取身份信息        try {          // get user info          // note: roles must be a object array! such as: [&#39;admin&#39;] or ,[&#39;developer&#39;,&#39;editor&#39;]          //拉去成功获得其中的身份信息          const { roles } = await store.dispatch(&#39;user/getInfo&#39;)          // 生成路由，返回为增加的路由          const accessRoutes = await store.dispatch(&#39;permission/generateRoutes&#39;, roles)          // dynamically add accessible routes          //动态添加路由规则，为原本的路由添加上上述的生成路由          router.addRoutes(accessRoutes)          // hack method to ensure that addRoutes is complete          // set the replace: true, so the navigation will not leave a history record          //复制to的路由对象解构          next({ ...to, replace: true })        } catch (error) {          // 获取失败，移除token          await store.dispatch(&#39;user/resetToken&#39;)          //打印消息          Message.error(error || &#39;Has Error&#39;)          //返回登录页面          next(`/login?redirect=${to.path}`)          NProgress.done()        }      }    }  } else {    /* has no token */    // 目的页面是否在白名单，如果是前往，不是回到登录页面    if (whiteList.indexOf(to.path) !== -1) {      // in the free login whitelist, go directly      next()    } else {      // other pages that do not have permission to access are redirected to the login page.      next(`/login?redirect=${to.path}`)      NProgress.done()    }  }})</code></pre><p>4.权限控制。</p><ol><li>创建vue实例的时候将vue-router挂载，但这个时候vue-router挂载登录页面或者一些不用权限的公用页面。   </li></ol><pre><code class="js">export const constantRoutes = [  {    path: &#39;/login&#39;,    component: () =&gt; import(&#39;@/views/login/index&#39;),    hidden: true  },  {    path: &#39;/auth-redirect&#39;,    component: () =&gt; import(&#39;@/views/login/auth-redirect&#39;),    hidden: true  },  {    path: &#39;/404&#39;,    component: () =&gt; import(&#39;@/views/error-page/404&#39;),    hidden: true  },  {    path: &#39;/401&#39;,    component: () =&gt; import(&#39;@/views/error-page/401&#39;),    hidden: true  },  {    path: &#39;/&#39;,    component: Layout,    redirect: &#39;/dashboard&#39;,    children: [      {        path: &#39;dashboard&#39;,        component: () =&gt; import(&#39;@/views/dashboard/index&#39;),        name: &#39;Dashboard&#39;,        meta: { title: &#39;Dashboard&#39;, icon: &#39;dashboard&#39;, affix: true }      }    ]  },    ]  }]</code></pre><ol start="2"><li>当用户登录后，获取用role，将role和下面的路由表每个页面的需要的权限作比较（meta中的roles数组中存在），将该路由加入数组中，使用router.addRoutes（）加入生成的路由，最终生成用户可访问的路由表。    </li></ol><pre><code class="js">export const asyncRoutes = [  {    path: &#39;/permission&#39;,    component: Layout,    redirect: &#39;/permission/page&#39;,    alwaysShow: true, // will always show the root menu    name: &#39;Permission&#39;,    meta: {      title: &#39;Permission&#39;,      icon: &#39;lock&#39;,      roles: [&#39;admin&#39;, &#39;editor&#39;] // you can set roles in root nav    },    //...      //...     ]</code></pre><pre><code class="js">generateRoutes({ commit }, roles) {    return new Promise(resolve =&gt; {      let accessedRoutes      // 如果包含管理员身份，管理员身份可以访问所有路由      if (roles.includes(&#39;admin&#39;)) {        accessedRoutes = asyncRoutes || []      } else {        //不是管理员的按照路由表中meta中的roles数组如果有对应的role则全部进行返回        accessedRoutes = filterAsyncRoutes(asyncRoutes, roles)      }      commit(&#39;SET_ROUTES&#39;, accessedRoutes)      //返回增加的路由      resolve(accessedRoutes)    })  }</code></pre><ol start="3"><li>使用vuex管理路由表，根据vuex中可访问的路由渲染侧边栏组件。</li></ol>]]></content>
       
       
       <categories>
@@ -23,31 +152,6 @@
             <tag> vue </tag>
             
             <tag> vue-element-admin </tag>
-            
-        </tags>
-      
-    </entry>
-    
-    
-    
-    <entry>
-      <title>vuex</title>
-      <link href="/2019/10/18/vuex/"/>
-      <url>/2019/10/18/vuex/</url>
-      
-        <content type="html"><![CDATA[<h1 id="vuex"><a href="#vuex" class="headerlink" title="vuex"></a>vuex</h1><p>建立store.js</p><pre><code class="vue">import Vue from &#39;vue&#39;import Vuex from &#39;vuex&#39;Vue.use(Vuex)export default new Vuex.Store({  state: {    number:0,  },  mutations: {    ADD(state){      state.number++    },    SUB(state){      state.number--    }  },  actions: {  }})</code></pre><p>在main.js中,将状态从根组件“注入”到每一个子组件中</p><pre><code class="vue">new Vue({  render: h =&gt; h(App),  store}).$mount(&#39;#app&#39;)</code></pre><p>在子组件中可以通过$store.state.number进行调用</p><h2 id="state属性"><a href="#state属性" class="headerlink" title="state属性"></a>state属性</h2><p>类似与vue中data属性，用于存放属性，键值对。可以通过 mutations 和 actions 来改变state的值。使用this.$store.state.属性名称 来获取相应的值。</p><h2 id="getters属性"><a href="#getters属性" class="headerlink" title="getters属性"></a>getters属性</h2><p>getters我们类比到vue中，那么它应该是 computed了 我们在使用的时候要使用 this.$store.getters.属性名   。用法也和computed类似，它实际上是调用一个方法，然后获取到的数据是经过一系列处理后并且return回来的数据。</p><h2 id="mutations"><a href="#mutations" class="headerlink" title="mutations"></a>mutations</h2><p>类似与vue的methods。可以通过调用其中的函数来修改state的值。this.$store.commit(‘ADD’)来调用mutations中的方法。</p><h2 id="actions属性"><a href="#actions属性" class="headerlink" title="actions属性"></a>actions属性</h2><p>actions属性用法和mutations类似，但是actions我们是不可以修改state的 需要在actions通过commit来调用mutations来修改数据，那么action的意义何在呢？处理异步事件就要用action来做了呀。调用方法是，this.$store.dispatch(“action的名字”,参数)</p><p>actions 方法的第一个参数是context，类似与store实例，可以调用 <code>context.commit</code> 提交一个 mutation，或者通过 <code>context.state</code> 和 <code>context.getters</code> 来获取 state 和 getters。</p><p>常用法，获取context中的commit方法，提交commit调用mutations来修改数据</p><pre><code class="js">actions: {  increment ({ commit }) {    commit(&#39;increment&#39;)  }}</code></pre><p>综合示例</p><pre><code>// store.jsimport Vue from &#39;vue&#39;import Vuex from &#39;vuex&#39;Vue.use(Vuex)export default new Vuex.Store({  state: {    number:0,  },  mutations: {    ADD(state){       state.number++    },    SUB(state){      state.number--    },    ADDPARAM(state,param){      if (typeof param !== &#39;number&#39;){        param = 0      }      state.number = state.number + param    }   },  actions: {    ASYNCADD(context,param){  //这里我们传入context上下文，里面包含 commit, state ,getters 这三个属性都可以通过context来调用到并且触发内部方法      setTimeout(function(){        context.commit(&#39;ADDPARAM&#39;,param)      },1000)    }  },  getters:{    getNumber(state){   //getter的书写方法      return state.number + 100    }  }})</code></pre><pre><code>&lt;!-- children.vue --&gt;&lt;template&gt;  &lt;div class=&quot;children&quot;&gt;    &lt;h1&gt;This is an children page&lt;/h1&gt;    &lt;button @click=&quot;add&quot;&gt;      +    &lt;/button&gt;      {{$store.state.number}}      {{$store.getters.getNumber}}      &lt;button  @click=&quot;sub&quot;&gt;      -    &lt;/button&gt;    &lt;button @click=&quot;actAdd&quot;&gt;action&lt;/button&gt;  &lt;/div&gt;&lt;/template&gt;&lt;script&gt;  export default{    name: &#39;children&#39;,    methods: {      add() {</code></pre><h2 id="modules"><a href="#modules" class="headerlink" title="modules"></a>modules</h2><p>Vuex 允许我们将 store 分割成<strong>模块（module）</strong>。每个模块拥有自己的 state、mutation、action、getter</p><pre><code class="js">const moduleA = {  state: { ... },  mutations: { ... },  actions: { ... },  getters: { ... }}const moduleB = {  state: { ... },  mutations: { ... },  actions: { ... }}const store = new Vuex.Store({  modules: {    a: moduleA,    b: moduleB  }})</code></pre>]]></content>
-      
-      
-      <categories>
-          
-          <category> 前端 </category>
-          
-      </categories>
-      
-      
-        <tags>
-            
-            <tag> vuex </tag>
             
         </tags>
       
